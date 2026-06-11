@@ -34,7 +34,11 @@ def root():
 
 @app.post("/predict")
 def predict(data: HeartInput):
-    df = pd.DataFrame([data.dict()])[features]
-    pred = int(model.predict(df)[0])
-    proba = float(model.predict_proba(df)[0, 1])
-    return {"prediction": pred, "probability": proba}
+    input_data = pd.DataFrame([data.dict()])
+    input_data = input_data[features]
+    prediction = model.predict(input_data)[0]
+    probability = model.predict_proba(input_data)[0][1]
+    return {
+        "prediction": int(prediction),
+        "probability": float(probability)
+    }
